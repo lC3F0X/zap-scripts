@@ -16,6 +16,13 @@ const HttpRequestHeader = Java.type(
 function authenticate(helper, paramsValues, credentials) {
 	print("🚀 [Authentication] Script starting...\n");
 
+	// ✅ Token reuse validation
+	const existingToken = ScriptVars.getGlobalVar("accessToken");
+	if (existingToken) {
+		print("🔒 Access token already set. Skipping authentication.\n");
+		return null;
+	}
+
 	const loginUrl = paramsValues.get("loginUrl");
 	const tokenAccessor = paramsValues.get("tokenAccessor") ?? "access_token";
 	const refreshTokenAccessor =
